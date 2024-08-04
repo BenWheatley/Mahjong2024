@@ -1,0 +1,124 @@
+body {
+	font-family: sans-serif;
+	color: white;
+}
+
+::selection {
+	background-color: rgba(0,0,0,0);
+}
+
+.tile {
+	position: absolute;
+	
+	background-size: 50px 50px; /* Sets the background image size to 50px by 50px */
+	background-position: center; /* Centers the background image */
+	background-repeat: no-repeat; /* Prevents the image from repeating */
+	background-blend-mode: multiply;
+	
+	cursor: pointer;
+	
+	border-radius: 10px;
+	box-shadow: inset 5px 5px 15px rgba(255, 255, 255, 0.3), inset -5px -5px 15px rgba(0, 0, 0, 0.3), 5px 5px 5px grey;
+	background-color: white;
+    outline: 1px solid lightgray;
+}
+
+.tile:hover {
+	background-color: rgba(255, 127, 127, 1);
+    outline: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.tile.highlighted {
+	background-color: rgba(127, 127, 255, 1);
+}
+
+.tile.disabled {
+	background-color: rgb(225, 225, 225);
+	pointer-events: none;
+}
+
+@keyframes flash {
+	0% { background-color: rgba(255, 255, 0, 1); }
+	100% { background-color: rgba(0, 255, 255, 1); }
+}
+.tile.hinted {
+	background-color: rgba(0, 255, 0, 1);
+	animation: flash 1s infinite; /* Flash every 1 second, indefinitely */
+}
+
+#controls {
+	padding: 1em;
+}
+
+#game-area {
+	position: absolute;
+}
+
+.button {
+	background-color: rgb(37, 190, 150);
+	border: 5px outset rgb(37, 190, 150);
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	margin: 1em;
+}
+
+.label {
+	background-color: rgb(37, 150, 190);
+	border: 5px ridge rgb(37, 150, 190);
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	margin: 1em;
+	height: 1em;
+}
+
+canvas {
+	opacity: 1;
+	transition: none;
+	pointer-events: none;
+}
+
+canvas.fade-out {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}
+
+#game-over-screen {
+	pointer-events: none;
+	display: hidden;
+	opacity: 0;
+	transition: opacity 1s ease-out;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	height: auto;
+	background: rgb(120, 88, 0);
+	border: 5px ridge rgb(120, 88, 0);
+	padding: 20px;
+	box-sizing: border-box;
+}
+#game-over-screen.visible {
+	display: block;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+#game-over-message {
+	font-size: 300%;
+	text-align: center;
+}
+
+#game-over-screen .label {
+	height: auto;
+	width: 50%;
+	margin: 1em auto;
+}
+
+#game-over-screen .label .button {
+	text-align: center;
+	margin: 1em auto;
+	display: block;
+}

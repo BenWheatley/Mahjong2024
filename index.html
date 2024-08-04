@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mahjong</title>
+	<link rel="stylesheet" href="Mahjong.css">
+	<script src="Mahjong.js"></script>
+</head>
+<body>
+	<div id="controls">
+		<span class="button" id="hints"></span>
+		<span class="button" id="shuffle"></span>
+		<span class="label" id="remaining"></span>
+	</div>
+	<div class="label" id="messages"></div>
+	<div id="game-area"></div>
+	<div id="game-over-screen">
+		<div id="game-over-message"></div>
+		<div class="label"><div>New Game:</div>
+		<!-- TODO: Mahjong maps
+			<div class="layout-selection-button" onclick="newGame(${layoutName});">${layoutName}</div>
+			-->
+		</div>
+	</div>
+    <script>
+		function newGame(layoutName) {
+			document.gameArea = document.getElementById("game-area");
+			let layoutURL = `Mahjong Layouts/${layoutName}.aml`;
+			let game = new Mahjong(layoutURL, document.gameArea);
+			game.configureHintButton(document.getElementById("hints"));
+			game.configureShuffleButton(document.getElementById("shuffle"));
+			game.remainingCountLabel = document.getElementById("remaining");
+			game.messagesLabel = document.getElementById("messages");
+			game.gameOverContainer = document.getElementById("game-over-screen");
+			game.gameOverMessage = document.getElementById("game-over-message");
+			game.updateUI();
+			document.game = game;
+			game.gameOverContainer.classList.remove('visible');
+		}
+		window.addEventListener('load', () => {
+			const urlParams = new URLSearchParams(window.location.search);
+			let layoutName = urlParams.get('layoutName');
+			if (layoutName == undefined) {
+				layoutName = "dragon";
+			}
+			newGame(layoutName);
+		});
+	</script>
+</body>
+</html>
