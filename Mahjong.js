@@ -280,11 +280,32 @@ class Mahjong {
 		}
 	}
 	
+	parityTest() {
+		let counts = {};
+		for (let x=0; x<MahjongLayout.GRID_EXTENT_X; ++x) {
+			for (let y=0; y<MahjongLayout.GRID_EXTENT_Y; ++y) {
+				for (let z=0; z<MahjongLayout.GRID_EXTENT_Z; ++z) {
+					if (this.cell_exists(x, y, z)) {
+						let c = this.cells[x][y][z];
+						if (counts[c.id] == undefined) {
+							counts[c.id] = 1;
+						} else {
+							counts[c.id] = counts[c.id] + 1;
+						}
+					}
+				}
+			}
+		}
+		console.log(counts);
+	}
+	
 	updateUI() {
 		this.hintButton.innerText = `Hints: ${this.remaining_hints}`;
 		this.shuffleButton.innerText = `Shuffles: ${this.remaining_shuffles}`;
 		this.remainingCountLabel.innerText = `Available moves: ${this.remainingMoveCount()}, remaining tiles: ${this.count_remaining_tiles()}`;
 		this.post_message(Mahjong.HELP_BASIC);
+		
+		//this.parityTest(); // Debug info
 	}
 	
 	post_message(message) {
@@ -324,8 +345,8 @@ class Mahjong {
 		for (let x=0; x<MahjongLayout.GRID_EXTENT_X; ++x) {
 			for (let y=0; y<MahjongLayout.GRID_EXTENT_Y; ++y) {
 				for (let z=0; z<MahjongLayout.GRID_EXTENT_Z; ++z) {
-					let t = this.cells[x][y][z];
-					if (t != null) {
+					if (this.cell_exists(x, y, z)) {
+						let t = this.cells[x][y][z];
 						t.setHighlighted(false);
 						t.hinted = false;
 						unshuffledTiles[tile_count] = t.id;
@@ -345,8 +366,8 @@ class Mahjong {
 		for (let x=0; x<MahjongLayout.GRID_EXTENT_X; ++x) {
 			for (let y=0; y<MahjongLayout.GRID_EXTENT_Y; ++y) {
 				for (let z=0; z<MahjongLayout.GRID_EXTENT_Z; ++z) {
-					let t = this.cells[x][y][z]; 
-					if (t != null) {
+					if (this.cell_exists(x, y, z)) {
+						let t = this.cells[x][y][z]; 
 						t.resetID(shuffledTiles[tile_count]);
 						if (++tile_count>shuffledTiles.length) {
 							return;
@@ -583,9 +604,12 @@ class Mahjong {
 	}
 	
 	can_remove_pair(x1, y1, z1, x2, y2, z2) {
+		if (!this.cell_exists(x1, y1, z1) || !this.cell_exists(x2, y2, z2)) {
+			return false;
+		}
 		let t1 = this.cells[x1][y1][z1];
 		let t2 = this.cells[x2][y2][z2];
-		if (t1==null || t2==null || t1==t2) {
+		if (x1==x2 && y1==y2 && z1==z2) {
 			return false;
 		}
 		if (!t1.compare_id(t2)) {
