@@ -1,0 +1,47 @@
+.window {
+	border: 4px lightgrey solid;
+	display: inline-block;
+	margin: 15px;
+	background-color: white;
+	border-radius: 8px;
+	text-align: left;
+	box-shadow: 10px 10px 15px #8884, 0px 0px 3px #000C;
+}
+
+.window-title {
+	padding: 4px 16px 4px 8px;
+	margin: 0;
+	background-image: linear-gradient(to bottom, #DDD, #CCC);
+	font-size: 16px;
+	text-shadow: 1px 1px 0px #FFFFFF88;
+}
+
+.circle-button {
+	height: 16px;
+	width: 16px;
+	border-radius: 8px;
+	background-color: #F00;
+	display: block;
+	float: left;
+	margin-right: 8px;
+	box-shadow: inset 0 0 5px #888;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.circle-button:hover {
+	background-color: #F44;
+	box-shadow: 0px 0px 15px #F00;
+}
+
+.circle-button:disabled {
+	background-color: #AAA;
+}
+
+#window-content {
+	padding: 10px;
+	margin: -1px;
+	border: 1px #6664 solid;
+	overflow-wrap: break-word;
+}

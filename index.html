@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Mahjong</title>
 	<link rel="stylesheet" href="Mahjong.css">
+	<link rel="stylesheet" href="retro-os.css">
 	<script src="Mahjong.js"></script>
 </head>
 <body>
@@ -12,15 +13,14 @@
 		<span class="button" id="hints"></span>
 		<span class="button" id="shuffle"></span>
 		<span class="label" id="remaining"></span>
+		<span class="button trailing" onclick="document.game.selectLevelWithMessage('New game');">New Game</span>
 	</div>
 	<div class="label" id="messages"></div>
 	<div id="game-area"></div>
-	<div id="game-over-screen">
-		<div id="game-over-message"></div>
-		<div class="label"><div>New Game:</div>
-		<!-- TODO: Mahjong maps
-			<div class="layout-selection-button" onclick="newGame(${layoutName});">${layoutName}</div>
-			-->
+	<div id="game-over-screen" class="window">
+		<div class="window-title"><span id="level-select-title">&nbsp;</span>
+		<span class="circle-button" onClick="document.getElementById('game-over-screen').classList.remove('visible')"></span></div>
+		<div id="layout-list"></div>
 		</div>
 	</div>
     <script>
@@ -33,19 +33,47 @@
 			game.remainingCountLabel = document.getElementById("remaining");
 			game.messagesLabel = document.getElementById("messages");
 			game.gameOverContainer = document.getElementById("game-over-screen");
-			game.gameOverMessage = document.getElementById("game-over-message");
+			game.gameOverMessage = document.getElementById("level-select-title");
 			game.updateUI();
 			document.game = game;
 			game.gameOverContainer.classList.remove('visible');
+			const currentUrl = new URL(window.location.href);
+			currentUrl.searchParams.set('layoutName', layoutName);
+			window.history.pushState({}, '', currentUrl);
 		}
-		window.addEventListener('load', () => {
+		function loadCurrentLayout() {
 			const urlParams = new URLSearchParams(window.location.search);
 			let layoutName = urlParams.get('layoutName');
 			if (layoutName == undefined) {
-				layoutName = "dragon";
+				layoutName = "Dragon";
 			}
 			newGame(layoutName);
+		}
+		window.addEventListener('load', () => {
+			loadCurrentLayout();
+			let layoutList = document.getElementById("layout-list");
+			layoutList.innerText = "";
+			["Arena", "Arrowhead", "Bag", "Battlements", "Cake", "Castle", "Clubs", "Crosshairs", "Crown", "Diagonals", "Diamonds", "Dragon", "Easy", "Eyes", "Flower", "Fortress", "Gilded Cage", "Giza", "Greek", "Gridlock", "Hearts", "Heatwave", "Hex", "Hexamid", "Orion", "Pyramid", "Quandrants", "Schrodinger", "Smile", "Spades", "Star of David", "Teeth", "Time", "Towers", "Wizard Hat"].forEach(layoutName => {
+				const outer = document.createElement('div');
+				outer.className = 'layout-selection-layout-container';
+				layoutList.appendChild(outer);
+				
+				const inner = document.createElement('div');
+				inner.className = 'layout-selection-button';
+				inner.onclick = () => newGame(layoutName);
+				outer.appendChild(inner);
+				
+				const img = document.createElement('img');
+				img.src = `Mahjong%20Layouts/${layoutName}.png`;
+				inner.appendChild(img);
+				
+				const label = document.createElement('div');
+				label.innerText = layoutName;
+				label.className = "layoutName";
+				inner.appendChild(label);
+			});
 		});
+		
 	</script>
 </body>
 </html>

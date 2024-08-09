@@ -123,7 +123,7 @@ class Tile {
 		[this.x, this.y, this.z] = [x, y, z];
 		const perspectiveZ = z * Tile.Z_SHIFT;
 		const drawX = perspectiveZ + x * (Tile.WIDTH + Tile.MARGIN) / 2;
-		const drawY = -perspectiveZ + y * (Tile.HEIGHT + Tile.MARGIN) / 2;
+		const drawY = -perspectiveZ + (MahjongLayout.GRID_EXTENT_Y-y) * (Tile.HEIGHT + Tile.MARGIN) / 2;
 		this.element.style.top = `${drawY}px`;
 		this.element.style.left = `${drawX}px`;
 		this.element.style.zIndex = z;
@@ -200,6 +200,9 @@ class MahjongLayout {
 }
 
 class Mahjong {
+	static WIN_CAPTION = "Victory! New game with layout…";
+	static LOSE_CAPTION = "Defeated, no more moves! New game with layout…";
+	
 	static TILES_DO_NOT_MATCH = "Tiles do not match";
 	static TILE_IS_BLOCKED = "Tile is blocked";
 	static CLICK_THE_FLASHING_TILES = "Click the flashing tiles";
@@ -229,11 +232,12 @@ class Mahjong {
 	
 	constructor(layoutURL, gameContainerElement) {
 		const extra = MahjongLayout.GRID_EXTENT_Z / 4;
-		const displayWidth = (Tile.WIDTH+Tile.MARGIN) * (MahjongLayout.GRID_EXTENT_X + extra);
-		const displayHeight = (Tile.HEIGHT+Tile.MARGIN) * (MahjongLayout.GRID_EXTENT_Y + extra);
+		const displayWidth = (Tile.WIDTH+Tile.MARGIN) * (MahjongLayout.GRID_EXTENT_X/2 + extra);
+		const displayHeight = (Tile.HEIGHT+Tile.MARGIN) * (MahjongLayout.GRID_EXTENT_Y/2 + extra);
 		this.gameContainerElement = gameContainerElement;
 		this.gameContainerElement.style.height = `${displayHeight}px`;
 		this.gameContainerElement.style.width = `${displayWidth}px`;
+		this.gameContainerElement.innerText = "";
 		
 		this.cells = Array.from({ length: MahjongLayout.GRID_EXTENT_X }, () => 
 			Array.from({ length: MahjongLayout.GRID_EXTENT_Y }, () => 
@@ -348,7 +352,7 @@ class Mahjong {
 					if (this.cell_exists(x, y, z)) {
 						let t = this.cells[x][y][z];
 						t.setHighlighted(false);
-						t.hinted = false;
+						t.setHinted(false);
 						unshuffledTiles[tile_count] = t.id;
 						tile_count++;
 					}
@@ -447,6 +451,12 @@ class Mahjong {
 	}
 	
 	game_over(won) {
+		this.selectLevelWithMessage( won ? Mahjong.WIN_CAPTION : Mahjong.LOSE_CAPTION );
+	}
+	
+	selectLevelWithMessage(message) {
+		this.gameOverMessage.innerText = message;
+		this.gameOverContainer.classList.add('visible');
 	}
 	
 	cell_click(x_in, y_in, z_in) {
