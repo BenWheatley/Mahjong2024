@@ -2,7 +2,7 @@ body {
 	font-family: Arial, sans-serif;
 	margin: 0;
 	font-size: 16px;
-	text-align: center;
+	text-align: center;levelSelectc
 }
 
 ::selection {
@@ -58,7 +58,7 @@ body {
 	position: absolute;
 	left: 1em;
 	top: 150px;
-	border: 1px solid black;
+	background: white;
 }
 
 .button {
@@ -176,8 +176,14 @@ canvas.fade-out {
 }
 
 .layoutName {
-	width: var(--layout-size);
+	width: calc(var(--layout-size) - 1em - 16px);
 	position: absolute;
 	bottom: 0.5em;
-	text-shadow: 1px 1px 2px #0008, -1px -1px 2px #fff8;
+	text-shadow: 1px 1px 1px #8884, -1px -1px 3px #ffff, 0px 0px 4px white;
+	/* background-color: rgba(255, 255, 0, 0.5); */
+	left: 0.5em;
+	right: 0.5em;
+	padding: 8px;
+	font-size: 24px;
+	font-weight: bold;
 }
