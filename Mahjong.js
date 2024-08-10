@@ -183,7 +183,7 @@ class MahjongLayout {
 				Array(MahjongLayout.GRID_EXTENT_Z).fill(false)
 			)
 		);
-		let index = 0;
+		let index = 1;
 		for (let x=0; x<extent_x; ++x) {
 			for (let y=0; y<extent_y; ++y) {
 				for (let z=0; z<extent_z; ++z) {
