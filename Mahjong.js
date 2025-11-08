@@ -155,7 +155,7 @@ class MahjongLayout {
 	async initialize(url) {
 		const response = await fetch(url);
 		if (!response.ok) {
-			throw new Error("Network failure: ${response.statusText}");
+			throw new Error(`Network failure: ${response.statusText}`);
 		}
 		
 		const arrayBuffer = await response.arrayBuffer();
@@ -329,7 +329,7 @@ class Mahjong {
 	
 	shuffle() {
 		if (this.remaining_shuffles<=0) {
-			this.post_message(Mahjong.Mahjong.NO_MORE_SHUFFLES_THIS_GAME);
+			this.post_message(Mahjong.NO_MORE_SHUFFLES_THIS_GAME);
 			return;
 		}
 		this.remaining_shuffles--;
@@ -638,7 +638,7 @@ class Mahjong {
 		let min_y = y-1, max_y = y+1;
 		let min_x = x-2, max_x = x+2;
 		if (min_y<0) min_y = 0;
-		if (max_y>=MahjongLayout.GRID_EXTENT_Y) min_y = MahjongLayout.GRID_EXTENT_Y-1;
+		if (max_y>=MahjongLayout.GRID_EXTENT_Y) max_y = MahjongLayout.GRID_EXTENT_Y-1;
 		// Check left
 		let blocked_left = false;
 		if (min_x>=0) {
